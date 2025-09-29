@@ -1,3 +1,9 @@
+export const config = {
+  api: {
+    bodyParser: false, // ✅ Disable default body parser
+  },
+};
+
 export default async function handler(req, res) {
   // ✅ CORS headers
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -14,7 +20,13 @@ export default async function handler(req, res) {
   }
 
   try {
-    const answers = typeof req.body === "string" ? JSON.parse(req.body) : req.body;
+    // ✅ Read raw body
+    const buffers = [];
+    for await (const chunk of req) {
+      buffers.push(chunk);
+    }
+    const rawBody = Buffer.concat(buffers).toString();
+    const answers = JSON.parse(rawBody);
 
     // 🔮 Poetic scoring logic
     const score = answers.length;
