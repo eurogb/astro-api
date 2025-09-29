@@ -10,19 +10,20 @@ export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, x-quiz-token");
 
-  // Secret token check
-  const token = req.headers["x-quiz-token"];
-  if (token !== "samja-astro-2025") {
-    return res.status(403).json({ error: "Forbidden" });
-  }
-
-  // Handle preflight
+  // Handle preflight first — must return 200 OK before any checks
   if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
 
+  // Reject non-POST methods
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
+  }
+
+  // Secret token check (after OPTIONS)
+  const token = req.headers["x-quiz-token"];
+  if (token !== "samja-astro-2025") {
+    return res.status(403).json({ error: "Forbidden" });
   }
 
   // Rate limiting (10 requests per minute per IP)
