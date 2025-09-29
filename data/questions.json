@@ -750,14 +750,16 @@
       ]
     },
     {
-      question: "Kako koristiš maštu u ljubavi?",
-      answers: [
-        { text: "Zamišljam budućnost", sign: "Jarac" },
-        { text: "Pišem ili crtam", sign: "Ribe" },
-        { text: "Stvaram scenarije u glavi", sign: "Vodenjak" },
-        { text: "Maštam o idealnim trenucima", sign: "Rak" }
+    "question": "Kako koristiš maštu u ljubavi?",
+          "answers": [
+            { "text": "Zamišljam budućnost", "sign": "Jarac" },
+            { "text": "Pišem ili crtam", "sign": "Ribe" },
+            { "text": "Stvaram scenarije u glavi", "sign": "Vodenjak" },
+            { "text": "Maštam o idealnim trenucima", "sign": "Rak" }
+          ]
+        }
       ]
     }
-  ] }
+  }
 }
 
