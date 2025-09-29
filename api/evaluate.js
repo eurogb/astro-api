@@ -14,7 +14,6 @@ export default async function handler(req, res) {
   }
 
   try {
-    // ✅ Parse JSON safely
     const answers = typeof req.body === "string" ? JSON.parse(req.body) : req.body;
 
     // 🔮 Poetic scoring logic
