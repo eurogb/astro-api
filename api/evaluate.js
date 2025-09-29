@@ -1,10 +1,12 @@
-export default function handler(req, res) {
+export default async function handler(req, res) {
+  // ✅ CORS headers
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
+  // ✅ Handle preflight request
   if (req.method === "OPTIONS") {
-    return res.status(200).end(); // Preflight response
+    return res.status(200).end();
   }
 
   if (req.method !== "POST") {
@@ -12,14 +14,16 @@ export default function handler(req, res) {
   }
 
   try {
-    const answers = JSON.parse(req.body);
+    // ✅ Parse JSON safely
+    const answers = typeof req.body === "string" ? JSON.parse(req.body) : req.body;
 
-    const score = answers.reduce((acc, val) => acc + val.length, 0); // or your real logic
+    // 🔮 Poetic scoring logic
+    const score = answers.length;
     let verdict = "";
 
-    if (score < 5) verdict = "🌑 A quiet cosmic whisper surrounds you.";
-    else if (score < 10) verdict = "🌤 Your stars are shifting — stay open.";
-    else verdict = "🌟 Destiny dances in your favor today.";
+    if (score < 5) verdict = "🌑 Tiho šaptanje svemira prati tvoje korake.";
+    else if (score < 10) verdict = "🌤 Zvijezde se pomiču — ostani otvoren/a.";
+    else verdict = "🌟 Sudbina pleše u tvoju korist danas.";
 
     res.status(200).json({ score, verdict });
   } catch (err) {
