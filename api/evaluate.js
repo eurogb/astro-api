@@ -1,64 +1,54 @@
 export const config = {
   api: {
-    bodyParser: false, // Disable default parser
+    bodyParser: false,
   },
 };
 
 export default async function handler(req, res) {
-  // CORS headers
+  // 🌐 CORS headers
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, x-quiz-token");
 
-  // Handle preflight first — must return 200 OK before any checks
-  if (req.method === "OPTIONS") {
-    return res.status(200).end();
-  }
+  // 🛑 Preflight
+  if (req.method === "OPTIONS") return res.status(200).end();
+  if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
 
-  // Reject non-POST methods
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
-  }
-
-  // Secret token check (after OPTIONS)
+  // 🔐 Token validation
   const token = req.headers["x-quiz-token"];
-  if (token !== "samja-astro-2025") {
-    return res.status(403).json({ error: "Forbidden" });
+  if (token !== "samja-astro-2025") return res.status(403).json({ error: "Forbidden" });
+
+  // 🌍 IP + headers
+  const ip = req.headers["x-forwarded-for"]?.split(",")[0] || req.socket.remoteAddress || "unknown";
+  const userAgent = req.headers["user-agent"] || "";
+  const origin = req.headers.origin || req.headers.referer || "";
+
+  // 🤖 Bot detection
+  const isBot = !userAgent.includes("Mozilla") || origin === "";
+  if (isBot) {
+    console.warn("🤖 Suspicious request detected:", { ip, userAgent, origin });
   }
 
-  // Rate limiting (10 requests per minute per IP)
-  const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
-  const now = Date.now();
-  global.rateLimit = global.rateLimit || {};
-  global.rateLimit[ip] = global.rateLimit[ip] || [];
-
-  global.rateLimit[ip] = global.rateLimit[ip].filter(ts => now - ts < 60000); // last 60 sec
-
-  if (global.rateLimit[ip].length >= 10) {
-    return res.status(429).json({ error: "Previše zahtjeva — pokušaj kasnije." });
-  }
-
-  global.rateLimit[ip].push(now);
+  // 📜 Logging
+  console.log("🔍 Request received:");
+  console.log("IP:", ip);
+  console.log("Token:", token);
+  console.log("User-Agent:", userAgent);
+  console.log("Origin:", origin);
+  console.log("Timestamp:", new Date().toISOString());
 
   try {
-    // Read raw body
+    // 📦 Read raw body
     const buffers = [];
-    for await (const chunk of req) {
-      buffers.push(chunk);
-    }
+    for await (const chunk of req) buffers.push(chunk);
     const rawBody = Buffer.concat(buffers).toString();
-
-    // Parse JSON safely
     const answers = JSON.parse(rawBody);
 
-    if (!Array.isArray(answers)) {
-      throw new Error("Expected an array");
-    }
+    if (!Array.isArray(answers)) throw new Error("Expected an array");
 
-    // Poetic scoring logic
+    // ✨ Poetic verdict
     const score = answers.length;
     let verdict = "";
-
     if (score < 5) verdict = "🌑 Tiho šaptanje svemira prati tvoje korake.";
     else if (score < 10) verdict = "🌤 Zvijezde se pomiču — ostani otvoren/a.";
     else verdict = "🌟 Sudbina pleše u tvoju korist danas.";
