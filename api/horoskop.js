@@ -3,15 +3,13 @@ import path from 'path';
 
 export default function handler(req, res) {
   const { date } = req.query;
-  const safeDate = date?.replace(/[^0-9\-]/g, '');
-  const filePath = path.join(process.cwd(), 'data', 'dan', `${safeDate}-horoskop.json`);
+  const filePath = path.join(process.cwd(), 'data', 'dan', `${date}-horoskop.json`);
 
   try {
-    const json = fs.readFileSync(filePath, 'utf-8');
-    res.setHeader('Cache-Control', 'no-store');
-    res.status(200).json(JSON.parse(json));
-  } catch (err) {
-    res.status(404).json({ error: 'Horoskop not found' });
+    const fileContent = fs.readFileSync(filePath, 'utf8');
+    const jsonData = JSON.parse(fileContent);
+    res.status(200).json(jsonData);
+  } catch (error) {
+    res.status(404).json({ error: 'Horoskop not found for date: ' + date });
   }
 }
-
