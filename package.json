@@ -1,5 +1,12 @@
 {
   "name": "astro-api",
   "version": "1.0.0",
-  "type": "module"
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node api/tip.hr.js"
+  },
+  "dependencies": {
+    "fs": "^0.0.1-security"
+  }
 }
