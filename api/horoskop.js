@@ -19,8 +19,15 @@ export default function handler(req, res) {
   console.log('📁 Looking in:', filePath);
 
   if (!fs.existsSync(filePath)) {
+<<<<<<< HEAD
     console.error('❌ File not found at path:', filePath);
     return res.status(404).json({ error: 'File not found for date: ' + date });
+=======
+    console.error('❌ File not found:', filePath);
+    return res
+      .status(404)
+      .json({ error: 'File not found for date: ' + date });
+>>>>>>> 4aad082 (my first commit)
   }
 
   try {
@@ -43,9 +50,20 @@ export default function handler(req, res) {
     }
 
     console.error('⚠️  No usable data format');
+<<<<<<< HEAD
     return res.status(404).json({ error: 'Horoskop not found for date: ' + date });
   } catch (err) {
     console.error('💥 Parse error:', err);
     return res.status(500).json({ error: 'Internal Server Error' });
+=======
+    return res
+      .status(404)
+      .json({ error: 'Horoskop not found for date: ' + date });
+  } catch (err) {
+    console.error('💥 Parse error:', err);
+    return res
+      .status(500)
+      .json({ error: 'Internal Server Error' });
+>>>>>>> 4aad082 (my first commit)
   }
 }
