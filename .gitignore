@@ -1,2 +1,4 @@
 .vercel
 node_modules/
+api/horoscope.js
+package-lock.json
