@@ -5,7 +5,15 @@ export const config = {
 };
 
 export default async function handler(req, res) {
-  const allowedOrigin = "https://eurogb.github.io";
+ const allowedOrigins = [
+  "https://eurogb.github.io",
+  "https://star-nu-blond.vercel.app"
+];
+
+const origin = req.headers.origin;
+if (allowedOrigins.includes(origin)) {
+  res.setHeader("Access-Control-Allow-Origin", origin);
+}
 
   // 🌐 CORS headers
   res.setHeader("Access-Control-Allow-Origin", allowedOrigin);
