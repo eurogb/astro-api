@@ -1,9 +1,12 @@
 {
   "name": "astro-api",
   "version": "1.0.0",
+  "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "vercel dev",
     "start": "node api/tip/hr.js"
+  },
+  "dependencies": {
+    "fs": "^0.0.1-security"
   }
 }
