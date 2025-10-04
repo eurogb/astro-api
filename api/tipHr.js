@@ -1,10 +1,9 @@
-// astro-api/api/tipHr.js
 import fs from "fs";
 import path from "path";
 
 export default function handler(req, res) {
   try {
-    const filePath = path.join(process.cwd(), "docs", "hr", "prognoza", "tip", "tip.hr.json");
+    const filePath = path.join(process.cwd(), "data", "tip", "tip.hr.json");
 
     if (!fs.existsSync(filePath)) {
       console.warn("❌ Tip file not found:", filePath);
