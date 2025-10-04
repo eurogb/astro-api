@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node api/tip.hr.js"
+    "start": "node api/tip/hr.js"
   },
   "dependencies": {
     "fs": "^0.0.1-security"
