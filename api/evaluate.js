@@ -5,8 +5,10 @@ export const config = {
 };
 
 export default async function handler(req, res) {
+  const allowedOrigin = "https://eurogb.github.io";
+
   // 🌐 CORS headers
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Origin", allowedOrigin);
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, x-quiz-token");
 
