@@ -1,6 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 
+console.log("🔮 tip/hr endpoint called");
+
+
 export default function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*'); // or your frontend domain
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
