@@ -5,9 +5,21 @@ console.log("🔮 tip/hr endpoint called");
 
 
 export default function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*'); // or your frontend domain
-  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+const allowedOrigins = [
+  'https://star-nu-blond.vercel.app',
+  'https://eurogb.github.io',
+  'https://your-custom-domain.com' // future domain
+];
+
+const origin = req.headers.origin;
+if (allowedOrigins.includes(origin)) {
+  res.setHeader('Access-Control-Allow-Origin', origin);
+}
+res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+
 
   if (req.method === 'OPTIONS') {
     res.status(200).end(); // Preflight response
