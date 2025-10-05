@@ -1,4 +1,6 @@
-// api/verdict/index.js  (Node 22.x serverless) — with simple request logging
+// api/verdict/index.js  (Node 22.x serverless) — with logging and in-memory rate limiter
+import { allow } from '../_rateLimit.js'
+
 export default async function handler(req, res) {
   const start = Date.now()
   const ip = req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown'
@@ -7,6 +9,13 @@ export default async function handler(req, res) {
 
   try {
     console.log(`${method} ${url} from ${ip} — start`)
+
+    if (!allow(ip)) {
+      res.statusCode = 429
+      res.setHeader('Content-Type', 'application/json')
+      return res.end(JSON.stringify({ error: 'rate_limited' }))
+    }
+
     if (req.method !== 'POST') {
       res.statusCode = 405
       return res.end('Method Not Allowed')
