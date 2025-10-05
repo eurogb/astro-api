@@ -1,5 +1,6 @@
 import { Hono } from 'hono'
-import { evaluateVerdict } from '../evaluate.js'
+import { evaluateVerdict } from '../../api/evaluate.js'
+
 
 const app = new Hono()
 
