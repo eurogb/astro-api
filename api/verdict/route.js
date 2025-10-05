@@ -1,9 +1,8 @@
 import { Hono } from 'hono'
-import { evaluateVerdict } from './evaluate.js'
+import { evaluateVerdict } from '../evaluate.js'
 
 const app = new Hono()
 
-// 🛡️ CORS Middleware
 app.use('*', async (c, next) => {
   c.header('Access-Control-Allow-Origin', '*')
   c.header('Access-Control-Allow-Methods', 'POST, OPTIONS')
@@ -11,7 +10,10 @@ app.use('*', async (c, next) => {
   await next()
 })
 
-// 🧠 Verdict Route
-app.post('/verdict', evaluateVerdict)
+app.post('/', evaluateVerdict)
+
+export const config = {
+  runtime: 'edge',
+}
 
 export default app
