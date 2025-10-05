@@ -7,7 +7,6 @@
     "start": "node api/tip/hr.js"
   },
   "dependencies": {
-    "fs": "^0.0.1-security",
     "hono": "^4.9.10"
   },
   "directories": {
